@@ -1,1 +1,221 @@
-{% extends "base1.html" %} {% block title %} Timesheet {% endblock %}
+{% extends "base1.html" %} {% block title %} Spurcroft Timesheet {% endblock %}{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+    <h1 class="mb-4">Timesheet</h1>
+    <form method="POST" id="timesheetForm">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Employee/Contractor Full Name <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="col-md-6">
+                <label for="title" class="form-label">Title <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="email" class="form-label">Employee/Contractor Email <span style="color: red;">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="col-md-6">
+                <label for="phone" class="form-label">Employee/Contractor Phone <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="manager_name" class="form-label">Manager/Supervisor Full Name <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="manager_name" name="manager_name" required>
+            </div>
+            <div class="col-md-6">
+                <label for="project" class="form-label">Project <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="project" name="project" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="month" class="form-label">Month <span style="color: red;">*</span></label>
+                <div class="custom-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle w-75 text-start d-flex justify-content-between align-items-center fixed-width-dropdown" type="button" id="monthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Month
+                    </button>
+                    <ul class="dropdown-menu w-75" aria-labelledby="monthDropdown">
+                        <li><a class="dropdown-item" href="#" data-value="">Select Month</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="January">January</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="February">February</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="March">March</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="April">April</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="May">May</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="June">June</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="July">July</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="August">August</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="September">September</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="October">October</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="November">November</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="December">December</a></li>
+                    </ul>
+                    <input type="hidden" id="month" name="month" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="dates" class="form-label">Dates <span style="color: red;">*</span></label>
+                <div class="custom-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle w-75 text-start d-flex justify-content-between align-items-center fixed-width-dropdown" type="button" id="datesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Date Range
+                    </button>
+                    <ul class="dropdown-menu w-75" aria-labelledby="datesDropdown">
+                        <li><a class="dropdown-item" href="#" data-value="">Select Date Range</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="1st - 15th">1st - 15th</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="16th - 31st">16th - 31st</a></li>
+                    </ul>
+                    <input type="hidden" id="dates" name="dates" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="year" class="form-label">Year <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="year" name="year" required>
+            </div>
+        </div>
+
+    <div id="timesheetTable" class="mt-5 w-75 mx-auto table-responsive" style="display: none;">
+        <h3 id="payCycleHeading">Pay Cycle</h3>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Date</th>
+                    <th style="width: 15%;">Hours Worked</th>
+                    <th>Duties Performed</th>
+                </tr>
+            </thead>
+            <tbody id="timesheetBody">
+                <td><input type="number" class="form-control hours-input" name="hours_worked[]" min="0" step="0.5" value="0"></td>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="1" class="text-end" style="min-height: 25px;"><strong>Total Hours</strong></td>
+                    <td colspan="2" id="totalHours">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="m-5 w-100 mx-auto">
+        <label for="duties_performed" class="form-label">Additional Notes (If Needed)</label>
+        <textarea class="form-control" id="duties_performed" name="duties_performed" placeholder="Add any general comments or remarks here..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width: 15%;">Submit</button>
+
+</form>
+</div>
+<script>
+    $(document).ready(function () {
+        // Hide timesheet when month or date is deselected
+        $('#month, #dates').change(function () {
+            generateTimesheet();
+        });
+
+        // Function to handle dropdown selection
+        function generateTimesheet() {
+            const month = $('#month').val();
+            const dateRange = $('#dates').val();
+
+            if (month && dateRange && month !== '' && dateRange !== '') {
+                let days;
+                $('#payCycleHeading').text('Pay Cycle ' + dateRange);
+                // Calculate the number of days in the selected month
+                const year = parseInt($('#year').val()) || new Date().getFullYear();
+                const monthIndex = new Date(Date.parse(month + " 1, " + year)).getMonth();
+                
+                if (dateRange === '1st - 15th') {
+                    days = 15;
+                } else {
+                    days = new Date(year, monthIndex + 1, 0).getDate() - 15;
+                }
+
+                let tbodyContent = '';
+                for (let i = (dateRange === '1st - 15th' ? 1 : 16); i <= (dateRange === '1st - 15th' ? 15 : 15 + days); i++) {
+                    const day = i < 10 ? '0' + i : i;
+                    tbodyContent += `
+                        <tr>
+                            <td style="background-color: #f0f0f0;">${('0' + (monthIndex + 1)).slice(-2)}/${day}</td>
+                            <td><input type="number" name="hours_worked[]" class="form-control hours-input" min="0" step="0.5"></td>
+                            <td><input type="text" name="duties_performed[]" class="form-control"></td>
+                        </tr>`;
+                }
+                $('#timesheetBody').html(tbodyContent);
+                $('#timesheetTable').show();
+            } else {
+                $('#timesheetTable').hide();
+            }
+        }
+
+        $('.dropdown-menu a').click(function () {
+            let value = $(this).data('value');
+            let dropdown = $(this).closest('.custom-dropdown');
+            dropdown.find('.dropdown-toggle').text(value);
+            dropdown.find('input[type="hidden"]').val(value);
+
+            // Generate the timesheet when both month and date range are selected
+            generateTimesheet();
+        });
+
+        // Calculate total hours
+        $(document).on('input', '.hours-input', function () {
+            let total = 0;
+            $('.hours-input').each(function () {
+                total += parseFloat($(this).val()) || 0;
+            });
+            $('#totalHours').text(total.toFixed(2));
+        });
+    });
+//         // Function to handle dropdown selection
+//         function generateTimesheet() {
+//             const month = $('#month').val();
+//             const dateRange = $('#dates').val();
+
+//             if (month && dateRange && month !== '' && dateRange !== '') {
+//                 let days;
+
+//                 // Calculate the number of days in the selected month
+//                 const year = parseInt($('#year').val()) || new Date().getFullYear();
+//                 const monthIndex = new Date(Date.parse(month + " 1, " + year)).getMonth();
+                
+//                 if (dateRange === '1st - 15th') {
+//                     days = 15;
+//                 } 
+//                 for (let i = (dateRange === '1st - 15th' ? 1 : 16); i <= (dateRange === '1st - 15th' ? 15 : 15 + days); i++) {
+//                 const day = i < 10 ? '0' + i : i;
+//                 tbodyContent += `
+//                     <tr>
+//                         <td style="background-color: #f0f0f0;">${('0' + (monthIndex + 1)).slice(-2)}/${day}</td>
+//                         <td><input type="number" class="form-control hours-input" min="0"></td>
+//                         <td><input type="text" class="form-control"></td>
+//                     </tr>`;
+//             }
+//             $('#timesheetBody').html(tbodyContent);
+//             $('#timesheetTable').show();
+//         } else {
+//             $('#timesheetTable').hide();
+//         }
+
+//         $('.dropdown-menu a').click(function () {
+//             let value = $(this).data('value');
+//             let dropdown = $(this).closest('.custom-dropdown');
+//             dropdown.find('.dropdown-toggle').text(value);
+//             dropdown.find('input[type="hidden"]').val(value);
+
+//             // Generate the timesheet when both month and date range are selected
+//             generateTimesheet();
+//         });
+
+//         // Calculate total hours
+//         $(document).on('input', '.hours-input', function () {
+//             let total = 0;
+//             $('.hours-input').each(function () {
+//                 total += parseFloat($(this).val()) || 0;
+//             });
+//             $('#totalHours').text(total.toFixed(2));
+//         });
+//     };
+</script>
+{% endblock %}
